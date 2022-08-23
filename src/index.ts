@@ -35,11 +35,6 @@ export default (
         getSubDirectory(path.resolve(process.cwd(), _path));
       });
       filter(fileExtensionsReg);
-      console.log(
-        "%c [ fileList ]-5",
-        "font-size:13px; background:pink; color:#bf2c9f;",
-        fileList
-      );
       return `
           ${code};
           window.onload = () => {

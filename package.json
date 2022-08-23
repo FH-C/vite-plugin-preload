@@ -1,14 +1,24 @@
 {
-  "name": "vite-plugin-preload",
-  "version": "1.0.0",
+  "name": "vite-plugin-dev-preload",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:FH-C/vite-plugin-preload.git"
+  },
   "scripts": {
     "dev": "tsc -w --project .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "pnpm clear | tsc --project ."
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.7.10"
+  }
 }
