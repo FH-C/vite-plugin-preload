@@ -40,7 +40,10 @@ export default (
           window.onload = () => {
               const lazyPages = ${JSON.stringify(Array.from(fileList))};
               setTimeout(() => {
-                lazyPages.forEach(item => fetch(item));
+                const tmp = document.createElement('script')
+                tmp.setAttribute('src', item)
+                tmp.setAttribute('type', 'module')
+                document.getElementsByTagName('body')[0].appendChild(tmp)
               }, ${timeout});
           }
       `;
