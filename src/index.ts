@@ -3,14 +3,14 @@ const path = require("path");
 
 const fileList = new Set<string>();
 
-const getSubDirectory = (_path: string) => {
+const getSubDirectory = (_path: string, root: string) => {
   if (fs.lstatSync(_path).isDirectory()) {
     const files = fs.readdirSync(_path);
     files.forEach((file: string) => {
-      getSubDirectory(path.resolve(_path, file));
+      getSubDirectory(path.resolve(_path, file), root);
     });
   } else if (fs.lstatSync(_path).isFile()) {
-    fileList.add(_path.replace(path.resolve(process.cwd(), "src"), ""));
+    fileList.add(_path.replace(root, ""));
   }
 };
 
@@ -26,13 +26,13 @@ const filter = (fileExtensionsReg: RegExp[]) => {
 export default (
   paths: string[],
   fileExtensionsReg: RegExp[],
-  timeout = 2000
+  config = {timeout: 2000, root: process.cwd()}
 ) => ({
   name: "vite-plugin-preload",
   transform(code: string, id: string) {
-    if (id.includes("src/index.ts")) {
+    if (id.includes("src/main.ts")) {
       paths.forEach((_path) => {
-        getSubDirectory(path.resolve(process.cwd(), _path));
+        getSubDirectory(path.resolve(process.cwd(), _path), config.root);
       });
       filter(fileExtensionsReg);
       return `
@@ -46,7 +46,7 @@ export default (
                   tmp.setAttribute('type', 'module')
                   document.getElementsByTagName('body')[0].appendChild(tmp)
                 })
-              }, ${timeout});
+              }, ${config.timeout});
           }
       `;
     }
